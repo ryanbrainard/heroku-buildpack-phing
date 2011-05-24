@@ -7,10 +7,6 @@ CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 
-echo -n "-----> Praying the programming gods for redemption..."
-sleep 1
-echo " done"
-
 cd $BUILD_DIR
 mkdir -p $CACHE_DIR/www
 mv * $CACHE_DIR/www
