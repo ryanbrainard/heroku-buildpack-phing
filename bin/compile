@@ -33,7 +33,7 @@ if [ -f src/Procfile ]; then
 fi
 
 # unpack cache
-for DIR in $APACHE_PATH $PHP_PATH ; do
+for DIR in $APACHE_PATH $PHP_PATH $PHING_DIR; do
   rm -rf $DIR
   if [ -d $CACHE_DIR/$DIR ]; then
     cp -r $CACHE_DIR/$DIR $DIR
@@ -99,7 +99,7 @@ chmod +x boot.sh
 
 # repack cache
 mkdir -p $CACHE_DIR
-for DIR in $APACHE_PATH $PHP_PATH ; do
+for DIR in $APACHE_PATH $PHP_PATH $PHING_DIR; do
   rm -rf $CACHE_DIR/$DIR
   cp -R $DIR $CACHE_DIR/$DIR
 done
