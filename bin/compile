@@ -9,6 +9,8 @@ APACHE_VERSION="2.2.19"
 APACHE_PATH="apache"
 PHP_VERSION="5.3.6"
 PHP_PATH="php"
+PHING_VERSION="2.4.6"
+PHING_PATH="phing"
 
 BIN_DIR=$(dirname $0)
 BUILD_DIR=$1
@@ -22,8 +24,8 @@ cd $BUILD_DIR
 
 # move app things to www
 mkdir -p $CACHE_DIR/www
-mv * $CACHE_DIR/www
-mv $CACHE_DIR/www .
+mv * $CACHE_DIR/src
+mv $CACHE_DIR/src .
 
 # keep Procfile
 if [ -f www/Procfile ]; then
@@ -52,9 +54,23 @@ if [ ! -d $PHP_PATH ]; then
   curl --silent --max-time 60 --location $PHP_URL | tar xz
 fi
 
+# install phing if needed
+if [ ! -d $PHING_PATH ]; then
+  PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
+  echo "-----> Bundling Phing v$PHING_VERSION"
+  curl --silent --max-time 60 --location $PHING_URL | tar xz
+fi
+
+export PHP_COMMAND=$PHP_PATH/bin/php
+export PHING_HOME=$PHING_PATH
+export PHP_CLASSPATH=${PHING_HOME}/classes
+export PATH=${PATH}:${PHING_HOME}/bin
+
+phing -propertyfile $BUILD_DIR/src/build/build.xml -Ddir.www=$BUILD_DIR/www www
+
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
-cp $LP_DIR/conf/php.ini php
+cp $LP_DIR/conf/php.ini $PHP_PATH
 
 # make php available on bin
 mkdir -p bin
