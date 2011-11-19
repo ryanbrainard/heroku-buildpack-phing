@@ -77,7 +77,7 @@ export PHP_CLASSPATH=$PHING_HOME/classes
 export LD_LIBRARY_PATH=$PHP_PATH/ext
 mkdir -p www
 cd src/build
-$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
+$BUILD_DIR/$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
 cd $BUILD_DIR
 
 cat >>boot.sh <<EOF
