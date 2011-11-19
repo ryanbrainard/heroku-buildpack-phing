@@ -56,18 +56,18 @@ fi
 
 # install phing if needed
 if [ ! -d $PHING_PATH ]; then
+  mkdir -p $PHING_PATH
   PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
   echo "-----> Bundling Phing v$PHING_VERSION"
-  curl --silent --max-time 60 --location $PHING_URL | tar xz
+  curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 fi
 
 export PHP_COMMAND=$PHP_PATH/bin/php
 export PHING_HOME=$PHING_PATH
 export PHP_CLASSPATH=${PHING_HOME}/classes
-export PATH=${PATH}:${PHING_HOME}/bin
 
 mkdir -p www
-phing -propertyfile src/build/build.xml -Ddir.www=www www
+$PHING_PATH/bin/phing -propertyfile src/build/build.xml -Ddir.www=www www
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
