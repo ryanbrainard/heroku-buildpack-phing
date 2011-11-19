@@ -22,14 +22,14 @@ shopt -s dotglob
 
 cd $BUILD_DIR
 
-# move app things to www
-mkdir -p $CACHE_DIR/www
+# move app things to src
+mkdir -p $CACHE_DIR/src
 mv * $CACHE_DIR/src
 mv $CACHE_DIR/src .
 
 # keep Procfile
-if [ -f www/Procfile ]; then
-  mv www/Procfile .
+if [ -f src/Procfile ]; then
+  mv src/Procfile .
 fi
 
 # unpack cache
@@ -66,7 +66,8 @@ export PHING_HOME=$PHING_PATH
 export PHP_CLASSPATH=${PHING_HOME}/classes
 export PATH=${PATH}:${PHING_HOME}/bin
 
-phing -propertyfile $BUILD_DIR/src/build/build.xml -Ddir.www=$BUILD_DIR/www www
+mkdir -p www
+phing -propertyfile src/build/build.xml -Ddir.www=www www
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
