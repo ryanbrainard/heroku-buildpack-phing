@@ -5,17 +5,17 @@
 set -e
 
 # config
-APACHE_VERSION="2.2.19"
-APACHE_PATH="apache"
-PHP_VERSION="5.3.6"
-PHP_PATH="php"
-PHING_VERSION="2.4.6"
-PHING_PATH="phing"
-
 BIN_DIR=$(dirname $0)
 BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
+
+APACHE_VERSION="2.2.19"
+APACHE_PATH="$BUILD_DIR/apache"
+PHP_VERSION="5.3.6"
+PHP_PATH="$BUILD_DIR/php"
+PHING_VERSION="2.4.6"
+PHING_PATH="$BUILD_DIR/phing"
 
 # include .files when moving things around
 shopt -s dotglob
@@ -77,7 +77,7 @@ export PHP_CLASSPATH=$PHING_HOME/classes
 export LD_LIBRARY_PATH=$PHP_PATH/ext
 mkdir -p www
 cd src/build
-$BUILD_DIR/$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
+$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
 cd $BUILD_DIR
 
 cat >>boot.sh <<EOF
