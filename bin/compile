@@ -76,7 +76,7 @@ export PHING_HOME=$PHING_PATH
 export PHP_CLASSPATH=$PHING_HOME/classes
 export LD_LIBRARY_PATH=$PHP_PATH/ext
 mkdir -p www
-$PHING_PATH/bin/phing -propertyfile src/build/build.xml -Ddir.www=www www
+$PHING_PATH/bin/phing -buildfile src/build/build.xml -Ddir.www=www www
 
 cat >>boot.sh <<EOF
 sed -i 's/Listen 80/Listen '\$PORT'/' /app/apache/conf/httpd.conf
