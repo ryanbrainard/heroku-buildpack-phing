@@ -62,13 +62,6 @@ if [ ! -d $PHING_PATH ]; then
   curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 fi
 
-export PHP_COMMAND=$PHP_PATH/bin/php
-export PHING_HOME=$PHING_PATH
-export PHP_CLASSPATH=${PHING_HOME}/classes
-
-mkdir -p www
-$PHING_PATH/bin/phing -propertyfile src/build/build.xml -Ddir.www=www www
-
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
 cp $LP_DIR/conf/php.ini $PHP_PATH
@@ -76,6 +69,13 @@ cp $LP_DIR/conf/php.ini $PHP_PATH
 # make php available on bin
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
+
+# do the phing thing
+export PHP_COMMAND=$PHP_PATH/bin/php
+export PHING_HOME=$PHING_PATH
+export PHP_CLASSPATH=${PHING_HOME}/classes
+mkdir -p www
+$PHING_PATH/bin/phing -propertyfile src/build/build.xml -Ddir.www=www www
 
 cat >>boot.sh <<EOF
 sed -i 's/Listen 80/Listen '\$PORT'/' /app/apache/conf/httpd.conf
