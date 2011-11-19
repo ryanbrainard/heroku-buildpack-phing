@@ -73,7 +73,8 @@ ln -s /app/php/bin/php bin/php
 # do the phing thing
 export PHP_COMMAND=$PHP_PATH/bin/php
 export PHING_HOME=$PHING_PATH
-export PHP_CLASSPATH=${PHING_HOME}/classes
+export PHP_CLASSPATH=$PHING_HOME/classes
+export LD_LIBRARY_PATH=$PHP_PATH/ext
 mkdir -p www
 $PHING_PATH/bin/phing -propertyfile src/build/build.xml -Ddir.www=www www
 
