@@ -11,11 +11,11 @@ CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 APACHE_VERSION="2.2.19"
-APACHE_PATH="$BUILD_DIR/apache"
+APACHE_PATH="apache"
 PHP_VERSION="5.3.6"
-PHP_PATH="$BUILD_DIR/php"
+PHP_PATH="php"
 PHING_VERSION="2.4.6"
-PHING_PATH="$BUILD_DIR/phing"
+PHING_PATH="phing"
 
 # include .files when moving things around
 shopt -s dotglob
@@ -71,13 +71,13 @@ mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
 # do the phing thing
-export PHP_COMMAND=$PHP_PATH/bin/php
-export PHING_HOME=$PHING_PATH
+export PHP_COMMAND=$BUILD_DIR/$PHP_PATH/bin/php
+export PHING_HOME=$BUILD_DIR/$PHING_PATH
 export PHP_CLASSPATH=$PHING_HOME/classes
-export LD_LIBRARY_PATH=$PHP_PATH/ext
+export LD_LIBRARY_PATH=$BUILD_DIR/$PHP_PATH/ext
 mkdir -p www
 cd src/build
-$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
+$BUILD_DIR/$PHING_PATH/bin/phing -Ddir.www=$BUILD_DIR/www www
 cd $BUILD_DIR
 
 cat >>boot.sh <<EOF
