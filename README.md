@@ -1,7 +1,21 @@
-Apache+PHP build pack
+Apache+PHP with Phing build pack
 ========================
 
-This is a build pack bundling PHP and Apache for Heroku apps.
+This is a build pack bundling PHP and Apache for Heroku apps built with Phing. The standard [PHP build pack](https://github.com/heroku/heroku-buildpack-php) takes your PHP source as is and deploys it directly to Apache, but this build pack runs a customized [Phing](http://www.phing.info/) build during the Git push before deploying to Apache. This is helpful for more complex PHP apps that require code generation or other preprocessing to prepare source code for deployment. 
+
+To get started, repositories should have a Phing build file called `build.xml` in the root directory of the repository with a `www` target that deposits the built source to the provided `WWW_DOCUMENT_ROOT` directory. WWW_DOCUMENT_ROOT will be an empty directory with its path provided as the ${WWW_DOCUMENT_ROOT} property. For example, here is a minimal `build.xml` that simply copies the source from the `src/main/php` directory for deployment:
+
+    <project name="Sample Phing Build" default="www">
+        <target name="www">
+            <fail unless="WWW_DOCUMENT_ROOT" message="WWW_DOCUMENT_ROOT is not set"/>
+            <copy todir="${WWW_DOCUMENT_ROOT}">
+                <fileset dir="src/main/php"/>
+            </copy>
+        </target>
+    </project>
+
+Of course, most builds would be more complex with file manipulations, mappings, or filtering.
+
 
 Configuration
 -------------

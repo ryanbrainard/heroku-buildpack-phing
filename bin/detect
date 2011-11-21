@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-# how to distingush from ANT builds?
-if [ -f $1/build/build.xml ]; then
+if [ -f $1/build.xml ] && grep -q "target.*name=[\'|\"]www[\'|\"]" $1/build.xml ; then
   echo "Phing" && exit 0
 else
   echo "no" && exit 1
 fi
-
