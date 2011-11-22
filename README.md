@@ -1,26 +1,30 @@
-Apache+PHP with Phing build pack
-========================
+Apache+PHP with Phing Build Pack
+================================
 
 This is a build pack bundling PHP and Apache for Heroku apps built with Phing. The standard [PHP build pack](https://github.com/heroku/heroku-buildpack-php) takes your PHP source as is and deploys it directly to Apache, but this build pack runs a customized [Phing](http://www.phing.info/) build during the Git push before deploying to Apache. This is helpful for more complex PHP apps that require code generation or other preprocessing to prepare source code for deployment. 
 
-To get started, repositories should have a Phing build file called `build.xml` in the root directory of the repository with a `www` target that deposits the built source to the provided `WWW_DOCUMENT_ROOT` directory. WWW_DOCUMENT_ROOT will be an empty directory with its path provided as the ${WWW_DOCUMENT_ROOT} property. For example, here is a minimal `build.xml` that simply copies the source from the `src/main/php` directory for deployment:
+
+Usage
+-----
+
+Repositories should have a Phing build file called `build.xml` in their root directory with a `stage` target that deposits web-accessible files in the directory designated by the `PUBLIC_HTML_DIR` environment variable. Projects may also deposit files that should not be accessed by users in the directory designated by the `PRIVATE_DIR` environment variable. For example, here is a minimal `build.xml` that simply copies the source from the `src/main/php` directory for deployment:
 
     <project name="Sample Phing Build" default="www">
-        <target name="www">
-            <fail unless="WWW_DOCUMENT_ROOT" message="WWW_DOCUMENT_ROOT is not set"/>
-            <copy todir="${WWW_DOCUMENT_ROOT}">
+        <target name="stage">
+            <fail unless="env.PUBLIC_HTML_DIR" message="Enivronment variable PUBLIC_HTML_DIR must be set"/>
+            <copy todir="${env.PUBLIC_HTML_DIR}">
                 <fileset dir="src/main/php"/>
             </copy>
         </target>
     </project>
 
-Of course, most builds would be more complex with file manipulations, mappings, or filtering.
+Of course, most builds would be more complex with file manipulations, mappings, or filtering. The `PUBLIC_HTML_DIR` and `PRIVATE_DIR` environment variables are also available at runtime for access by PHP scripts.
 
 
 Configuration
 -------------
 
-The config files are bundled with the LP itself:
+The config files are bundled with the build pack itself:
 
 * conf/httpd.conf
 * conf/php.ini
@@ -53,15 +57,6 @@ Pre-compiling binaries
     mkdir /app/php/ext
     cp /usr/lib/libmysqlclient.so.15 /app/php/ext/
     
-    # pear
-    apt-get install php5-dev php-pear
-    pear config-set php_dir /app/php
-    pecl install apc
-    mkdir /app/php/include/php/ext/apc
-    cp /usr/lib/php5/20060613/apc.so /app/php/ext/
-    cp /usr/include/php5/ext/apc/apc_serializer.h /app/php/include/php/ext/apc/
-    
-    
     # package
     cd /app
     echo '2.2.19' > apache/VERSION
@@ -72,5 +67,5 @@ Pre-compiling binaries
 Meta
 ----
 
-Created by Pedro Belo.
+Created by Pedro Belo and extended for Phing by Ryan Brainard.
 Many thanks to Keith Rarick for the help with assorted Unix topics :)
