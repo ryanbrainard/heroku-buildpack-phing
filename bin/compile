@@ -10,6 +10,11 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
+SOURCE_PATH="src"
+TARGET_PATH="target"
+PUBLIC_HTML_PATH="$TARGET_PATH/public_html"
+PRIVATE_PATH="$TARGET_PATH/private"
+
 APACHE_VERSION="2.2.19"
 APACHE_PATH="apache"
 PHP_VERSION="5.3.6"
@@ -22,14 +27,14 @@ shopt -s dotglob
 
 cd $BUILD_DIR
 
-# move app things to src
-mkdir -p $CACHE_DIR/src
-mv * $CACHE_DIR/src
-mv $CACHE_DIR/src .
+# move everything pushed into source sub-directory
+mkdir -p $CACHE_DIR/$SOURCE_PATH
+mv * $CACHE_DIR/$SOURCE_PATH
+mv $CACHE_DIR/$SOURCE_PATH .
 
 # keep Procfile
-if [ -f src/Procfile ]; then
-  mv src/Procfile .
+if [ -f $SOURCE_PATH/Procfile ]; then
+  mv $SOURCE_PATH/Procfile .
 fi
 
 # unpack cache
@@ -88,7 +93,8 @@ touch /app/apache/logs/access_log
 tail -F /app/apache/logs/error_log &
 tail -F /app/apache/logs/access_log &
 export LD_LIBRARY_PATH=/app/php/ext
-export PHP_INI_SCAN_DIR=/app/www
+export PHP_INI_SCAN_DIR=/app/$PUBLIC_HTML_PATH
+export PRIVATE_DIR=/app/$PRIVATE_PATH
 echo "Launching apache"
 exec /app/apache/bin/httpd -DNO_DETACH
 EOF
@@ -96,11 +102,13 @@ EOF
 chmod +x boot.sh
 
 # do the phing thing
-export PHP_COMMAND=$BUILD_DIR/$PHP_PATH/bin/php
-export PHING_HOME=$BUILD_DIR/$PHING_PATH
-export PHP_CLASSPATH=$PHING_HOME/classes
-export LD_LIBRARY_PATH=$BUILD_DIR/$PHP_PATH/ext
-mkdir -p www
-cd src
-$BUILD_DIR/$PHING_PATH/bin/phing -DWWW_DOCUMENT_ROOT=$BUILD_DIR/www www
-
+export PHP_COMMAND="$BUILD_DIR/$PHP_PATH/bin/php"
+export PHING_HOME="$BUILD_DIR/$PHING_PATH"
+export PHP_CLASSPATH="$PHING_HOME/classes"
+export LD_LIBRARY_PATH="$BUILD_DIR/$PHP_PATH/ext"
+export PUBLIC_HTML_DIR="$BUILD_DIR/$PUBLIC_HTML_PATH"
+export PRIVATE_DIR="$BUILD_DIR/PRIVATE_PATH"
+mkdir -p $PUBLIC_HTML_DIR
+mkdir -p $PRIVATE_DIR
+cd $SOURCE_DIR
+$BUILD_DIR/$PHING_PATH/bin/phing stage
