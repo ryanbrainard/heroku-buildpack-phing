@@ -21,7 +21,7 @@ PHP_VERSION="5.3.6"
 PHP_PATH="php"
 PHING_VERSION="2.4.6"
 PHING_PATH="phing"
-EXT_PATH="$PHP_PATH/ext"
+EXT_PATH="extensions"
 REDIS_EXT="$EXT_PATH/redis.so"
 
 # include .files when moving things around
