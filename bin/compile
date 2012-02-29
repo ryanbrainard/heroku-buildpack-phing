@@ -21,6 +21,8 @@ PHP_VERSION="5.3.6"
 PHP_PATH="php"
 PHING_VERSION="2.4.6"
 PHING_PATH="phing"
+EXT_PATH="$PHP_PATH/ext"
+REDIS_EXT="$EXT_PATH/redis.so"
 
 # include .files when moving things around
 shopt -s dotglob
@@ -65,6 +67,14 @@ if [ ! -d $PHING_PATH ]; then
   PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
   echo "-----> Bundling Phing v$PHING_VERSION"
   curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
+fi
+
+# install redis if needed
+if [ ! -f $REDIS_EXT ]; then
+  mkdir -p $(dirname $REDIS_EXT)
+  REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis.so"
+  echo "-----> Bundling Redis extension"
+  curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
 fi
 
 # repack cache
