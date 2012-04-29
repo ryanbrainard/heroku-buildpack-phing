@@ -3,6 +3,8 @@
 
 cat <<EOF
 ---
+config_vars:
+  APP_LOG_FILE: /app/target/app.log
 default_process_types:
   web: sh boot.sh
 EOF
