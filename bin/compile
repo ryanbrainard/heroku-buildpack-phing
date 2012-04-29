@@ -39,51 +39,24 @@ if [ -f $SOURCE_PATH/Procfile ]; then
   mv $SOURCE_PATH/Procfile .
 fi
 
-# unpack cache
-for DIR in $APACHE_PATH $PHP_PATH $PHING_PATH; do
-  rm -rf $DIR
-  if [ -d $CACHE_DIR/$DIR ]; then
-    cp -r $CACHE_DIR/$DIR $DIR
-  fi
-done
+APACHE_URL="https://s3.amazonaws.com/rbrainard-public/apache-$APACHE_VERSION.tar.gz"
+#APACHE_URL="https://s3.amazonaws.com/php-lp/apache-$APACHE_VERSION.tar.gz"
+echo "-----> Bundling Apache v$APACHE_VERSION"
+curl --silent --max-time 60 --location $APACHE_URL | tar xz
 
-# install apache if needed
-if [ ! -d $APACHE_PATH ]; then
-  APACHE_URL="https://s3.amazonaws.com/rbrainard-public/apache-$APACHE_VERSION.tar.gz"
-  #APACHE_URL="https://s3.amazonaws.com/php-lp/apache-$APACHE_VERSION.tar.gz"
-  echo "-----> Bundling Apache v$APACHE_VERSION"
-  curl --silent --max-time 60 --location $APACHE_URL | tar xz
-fi
+PHP_URL="https://s3.amazonaws.com/php-lp/php-$PHP_VERSION.tar.gz"
+echo "-----> Bundling PHP v$PHP_VERSION"
+curl --silent --max-time 60 --location $PHP_URL | tar xz
 
-# install php if needed
-if [ ! -d $PHP_PATH ]; then
-  PHP_URL="https://s3.amazonaws.com/php-lp/php-$PHP_VERSION.tar.gz"
-  echo "-----> Bundling PHP v$PHP_VERSION"
-  curl --silent --max-time 60 --location $PHP_URL | tar xz
-fi
+mkdir -p $PHING_PATH
+PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
+echo "-----> Bundling Phing v$PHING_VERSION"
+curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 
-# install phing if needed
-if [ ! -d $PHING_PATH ]; then
-  mkdir -p $PHING_PATH
-  PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
-  echo "-----> Bundling Phing v$PHING_VERSION"
-  curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
-fi
-
-# install redis if needed
-if [ ! -f $REDIS_EXT ]; then
-  mkdir -p $(dirname $REDIS_EXT)
-  REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis.so"
-  echo "-----> Bundling Redis extension"
-  curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
-fi
-
-# repack cache
-mkdir -p $CACHE_DIR
-for DIR in $APACHE_PATH $PHP_PATH $PHING_PATH; do
-  rm -rf $CACHE_DIR/$DIR
-  cp -R $DIR $CACHE_DIR/$DIR
-done
+mkdir -p $(dirname $REDIS_EXT)
+REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis.so"
+echo "-----> Bundling Redis extension"
+curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
