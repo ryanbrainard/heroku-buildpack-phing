@@ -44,7 +44,7 @@ APACHE_URL="https://s3.amazonaws.com/rbrainard-public/apache-$APACHE_VERSION.tar
 echo "-----> Bundling Apache v$APACHE_VERSION"
 curl --silent --max-time 60 --location $APACHE_URL | tar xz
 
-PHP_URL=""https://s3.amazonaws.com/rbrainard-public/php-$PHP_VERSION.tar.gz"
+PHP_URL="https://s3.amazonaws.com/rbrainard-public/php-$PHP_VERSION.tar.gz"
 echo "-----> Bundling PHP v$PHP_VERSION"
 curl --silent --max-time 60 --location $PHP_URL | tar xz
 
