@@ -77,6 +77,7 @@ for var in \`env|cut -f1 -d=\`; do
 done
 touch /app/apache/logs/error_log
 touch /app/apache/logs/access_log
+touch /app/$TARGET_PATH/app.log
 tail -F /app/apache/logs/error_log &
 tail -F /app/apache/logs/access_log &
 tail -F /app/$TARGET_PATH/app.log &
