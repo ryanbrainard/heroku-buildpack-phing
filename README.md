@@ -60,9 +60,9 @@ Pre-compiling binaries
     # package
     cd /app
     echo '2.2.22' > apache/VERSION
-    tar -zcvf apache.tar.gz apache
+    tar -zcvf apache-2.2.22.tar.gz apache
     echo '5.3.15' > php/VERSION
-    tar -zcvf php.tar.gz php
+    tar -zcvf php-5.3.15.tar.gz php
 
 Meta
 ----
