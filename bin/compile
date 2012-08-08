@@ -22,6 +22,7 @@ PHP_PATH="php"
 PHING_VERSION="2.4.6"
 PHING_PATH="phing"
 EXT_PATH="extensions"
+REDIS_VERSION="2.2.1"
 REDIS_EXT="$EXT_PATH/redis.so"
 
 # include .files when moving things around
@@ -54,8 +55,8 @@ echo "-----> Bundling Phing v$PHING_VERSION"
 curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 
 mkdir -p $(dirname $REDIS_EXT)
-REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis.so"
-echo "-----> Bundling Redis extension"
+REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis-$REDIS_VERSION.so"
+echo "-----> Bundling Redis extension $REDIS_VERSION"
 curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
 
 #clean the cache
