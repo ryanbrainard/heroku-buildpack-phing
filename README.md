@@ -35,20 +35,20 @@ Pre-compiling binaries
 
     # apache
     mkdir /app
-    wget http://apache.cyberuse.com//httpd/httpd-2.2.19.tar.gz
-    tar xvzf httpd-2.2.19.tar.gz
-    cd httpd-2.2.19
-    ./configure --prefix=/app/apache --enable-rewrite
+    curl --location -O http://www.gtlib.gatech.edu/pub/apache//httpd/httpd-2.2.22.tar.gz
+    tar xvzf httpd-2.2.22.tar.gz 
+    cd httpd-2.2.22
+    ./configure --prefix=/app/apache --enable-rewrite --enable-expires --enable-headers --disable-setenvif     
     make
     make install
     cd ..
     
     # php
-    wget http://us2.php.net/get/php-5.3.6.tar.gz/from/us.php.net/mirror 
+    wget http://us2.php.net/get/php-5.3.15.tar.gz/from/us.php.net/mirror 
     mv mirror php.tar.gz
     tar xzvf php.tar.gz
-    cd php-5.3.6/
-    ./configure --prefix=/app/php --with-apxs2=/app/apache/bin/apxs --with-mysql --with-pdo-mysql --with-pgsql --with-pdo-pgsql --with-iconv --with-gd --with-curl=/usr/lib --with-config-file-path=/app/php --enable-soap=shared --with-openssl
+    cd php-5.3.15/
+./configure --prefix=/app/php --with-apxs2=/app/apache/bin/apxs --with-mysql --with-pdo-mysql --with-pgsql --with-pdo-pgsql --with-iconv --with-gd --with-curl=/usr/lib --with-config-file-path=/app/php --enable-soap=shared --with-openssl --enable-cli --with-readline --enable-pcntl
     make
     make install
     cd ..
@@ -59,10 +59,10 @@ Pre-compiling binaries
     
     # package
     cd /app
-    echo '2.2.19' > apache/VERSION
-    tar -zcvf apache.tar.gz apache
-    echo '5.3.6' > php/VERSION
-    tar -zcvf php.tar.gz php
+    echo '2.2.22' > apache/VERSION
+    tar -zcvf apache-2.2.22.tar.gz apache
+    echo '5.3.15' > php/VERSION
+    tar -zcvf php-5.3.15.tar.gz php
 
 Meta
 ----

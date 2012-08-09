@@ -17,11 +17,12 @@ PRIVATE_PATH="$TARGET_PATH/private"
 
 APACHE_VERSION="2.2.22"
 APACHE_PATH="apache"
-PHP_VERSION="5.3.10"
+PHP_VERSION="5.3.15"
 PHP_PATH="php"
 PHING_VERSION="2.4.6"
 PHING_PATH="phing"
 EXT_PATH="extensions"
+REDIS_VERSION="2.2.1"
 REDIS_EXT="$EXT_PATH/redis.so"
 
 # include .files when moving things around
@@ -44,7 +45,7 @@ APACHE_URL="https://s3.amazonaws.com/rbrainard-public/apache-$APACHE_VERSION.tar
 echo "-----> Bundling Apache v$APACHE_VERSION"
 curl --silent --max-time 60 --location $APACHE_URL | tar xz
 
-PHP_URL="https://s3.amazonaws.com/php-lp/php-$PHP_VERSION.tar.gz"
+PHP_URL="https://s3.amazonaws.com/rbrainard-public/php-$PHP_VERSION.tar.gz"
 echo "-----> Bundling PHP v$PHP_VERSION"
 curl --silent --max-time 60 --location $PHP_URL | tar xz
 
@@ -54,8 +55,8 @@ echo "-----> Bundling Phing v$PHING_VERSION"
 curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 
 mkdir -p $(dirname $REDIS_EXT)
-REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis.so"
-echo "-----> Bundling Redis extension"
+REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis-$REDIS_VERSION.so"
+echo "-----> Bundling Redis extension $REDIS_VERSION"
 curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
 
 #clean the cache
@@ -76,6 +77,7 @@ for var in \`env|cut -f1 -d=\`; do
 done
 touch /app/apache/logs/error_log
 touch /app/apache/logs/access_log
+touch /app/$TARGET_PATH/app.log
 tail -F /app/apache/logs/error_log &
 tail -F /app/apache/logs/access_log &
 tail -F /app/$TARGET_PATH/app.log &
