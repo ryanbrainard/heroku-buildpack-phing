@@ -48,14 +48,15 @@ Pre-compiling binaries
     mv mirror php.tar.gz
     tar xzvf php.tar.gz
     cd php-5.3.15/
-./configure --prefix=/app/php --with-apxs2=/app/apache/bin/apxs --with-mysql --with-pdo-mysql --with-pgsql --with-pdo-pgsql --with-iconv --with-gd --with-curl=/usr/lib --with-config-file-path=/app/php --enable-soap=shared --with-openssl --enable-cli --with-readline --enable-pcntl
+    ./configure --prefix=/app/php --with-apxs2=/app/apache/bin/apxs --with-mysql --with-pdo-mysql --with-pgsql --with-pdo-pgsql --with-iconv --with-gd --with-curl=/usr/lib --with-config-file-path=/app/php --enable-soap=shared --with-openssl --enable-cli --with-readline --enable-pcntl --with-mcrypt  --enable-shared=no --enable-static=yes
     make
     make install
     cd ..
     
     # php extensions
     mkdir /app/php/ext
-    cp /usr/lib/libmysqlclient.so.15 /app/php/ext/
+    cp /usr/lib/libmysqlclient.so.16 /app/php/ext/
+    cp /usr/lib/libmcrypt.so.4 /app/php/ext/
     
     # package
     cd /app
