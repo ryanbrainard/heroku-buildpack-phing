@@ -61,6 +61,7 @@ curl --silent --max-time 60 --location $REDIS_EXT_URL > $REDIS_EXT
 
 #clean the cache
 rm -rf $CACHE_DIR
+mkdir $CACHE_DIR
 
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
