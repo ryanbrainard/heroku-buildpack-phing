@@ -76,9 +76,9 @@ cat >>boot.sh <<EOF
 touch /app/apache/logs/error_log
 touch /app/apache/logs/access_log
 touch /app/$TARGET_PATH/app.log
-tail -F /app/apache/logs/error_log &
-tail -F /app/apache/logs/access_log &
-tail -F /app/$TARGET_PATH/app.log &
+tail -n 0 -F /app/apache/logs/error_log &
+tail -n 0 -F /app/apache/logs/access_log &
+tail -n 0 -F /app/$TARGET_PATH/app.log &
 export LD_LIBRARY_PATH=/app/php/ext
 export PHP_INI_SCAN_DIR=/app/$PUBLIC_HTML_PATH
 export PUBLIC_HTML_DIR=/app/$PUBLIC_HTML_PATH
