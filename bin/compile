@@ -40,6 +40,11 @@ if [ -f $SOURCE_PATH/Procfile ]; then
   mv $SOURCE_PATH/Procfile .
 fi
 
+# keep profile.d
+if [ -d $SOURCE_PATH/.profile.d ]; then
+  mv $SOURCE_PATH/.profile.d .
+fi
+
 APACHE_URL="https://s3.amazonaws.com/rbrainard-public/apache-$APACHE_VERSION.tar.gz"
 #APACHE_URL="https://s3.amazonaws.com/php-lp/apache-$APACHE_VERSION.tar.gz"
 echo "-----> Bundling Apache v$APACHE_VERSION"
