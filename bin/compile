@@ -78,12 +78,11 @@ ln -s /app/php/bin/php bin/php
 
 # create the release script
 cat >>boot.sh <<EOF
-mkfifo /app/apache/logs/error_log
-mkfifo /app/apache/logs/access_log
-mkfifo /app/$TARGET_PATH/app.log
-tail -n 0 -F /app/apache/logs/error_log &
-tail -n 0 -F /app/apache/logs/access_log &
-tail -n 0 -F /app/$TARGET_PATH/app.log &
+for LOGFILE in /app/$TARGET_PATH/app.log /app/apache/logs/access_log /app/apache/logs/error_log; do
+  mkfifo $LOGFILE
+  chmod o+w $LOGFILE
+  tail -n 0 -F $LOGFILE &
+done
 export LD_LIBRARY_PATH=/app/php/ext
 export PHP_INI_SCAN_DIR=/app/$PUBLIC_HTML_PATH
 export PUBLIC_HTML_DIR=/app/$PUBLIC_HTML_PATH
