@@ -77,7 +77,7 @@ mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
 # create the release script
-cat >>boot.sh <<EOF
+cat >boot.sh <<EOF
 mkfifo /app/apache/logs/error_log
 mkfifo /app/apache/logs/access_log
 mkfifo /app/$TARGET_PATH/app.log
