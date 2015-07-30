@@ -22,8 +22,6 @@ PHP_PATH="php"
 PHING_VERSION="2.4.6"
 PHING_PATH="phing"
 EXT_PATH="extensions"
-REDIS_VERSION="2.2.1"
-REDIS_EXT="$EXT_PATH/redis.so"
 
 # include .files when moving things around
 shopt -s dotglob
