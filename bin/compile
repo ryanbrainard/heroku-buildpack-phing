@@ -59,6 +59,10 @@ PHING_URL="http://www.phing.info/get/phing-$PHING_VERSION.tgz"
 echo "-----> Bundling Phing v$PHING_VERSION"
 curl --silent --max-time 60 --location $PHING_URL | tar xz -C $PHING_PATH
 
+if $BUILD_DIR/$PHING_PATH/bin/phing -list | grep -q post-install; then
+  $BUILD_DIR/$PHING_PATH/bin/phing post-install
+fi
+
 mkdir -p $(dirname $REDIS_EXT)
 REDIS_EXT_URL="https://s3.amazonaws.com/rbrainard-public/redis-$REDIS_VERSION.so"
 echo "-----> Bundling Redis extension $REDIS_VERSION"
